@@ -13,20 +13,23 @@ public class MainController implements ControllerInterface {
 
     @Override
     public int activate(String[] deactivations, String[] activations) {
+        int index = 0;
         try {
             // Process deactivations
             for (String feature : deactivations) {
                 systemModel.deactivateFeature(feature);
+                index--;
             }
 
             // Process activations
             for (String feature : activations) {
                 systemModel.activateFeature(feature);
+                index++;
             }
 
-            return 0;
+            return index;
         } catch (Exception e) {
-            return 3;
+            return -1;
         }
     }
 
