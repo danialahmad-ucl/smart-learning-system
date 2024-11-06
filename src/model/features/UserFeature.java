@@ -2,7 +2,7 @@ package model.features;
 
 public class UserFeature implements Feature {
     private boolean active;
-    private final String name = "User";
+    private final String name = "UserFeatures";
 
     public UserFeature(boolean active) {
         this.active = active;

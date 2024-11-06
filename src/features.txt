@@ -1,0 +1,9 @@
+Feature/Mandatory/Premium-SocialFeatures-AdaptiveLearning-PracticeMode-UserFeatures-Courses
+Premium/Mandatory/AdFree-UnlimitedMistakes-NoLessonLimit
+SocialFeatures/Or/Leaderboard-DiscussionForum-GroupLearning
+AdaptiveLearning/Optional/CustomPaths-PerformanceBasedAdjustments
+PracticeMode/Or/FlashCards-MCQs
+UserFeatures/Or/ProgressTracking-Reminders-Rewards
+Rewards/Or/Badge-Points-Certifications
+Courses/Or/BasicCourses-PremiumCourses-DifficultyLevel
+DifficultyLevel/Optional/Easy-Medium-Hard

@@ -63,6 +63,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
         // Create window with title "Smart Learning System" that stops the program when closed
         JFrame frame = new JFrame("Smart Learning System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

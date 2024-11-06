@@ -2,7 +2,7 @@ package model.features;
 
 public class PracticeFeature implements Feature {
     private boolean active;
-    private final String name = "Practice";
+    private final String name = "PracticeMode";
 
     public PracticeFeature(boolean active) {
         this.active = active;
