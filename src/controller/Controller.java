@@ -1,14 +1,15 @@
 package controller;
 
-import model.SystemModel;
+import model.Model;
+import view.View;
 
-public class MainController implements ControllerInterface {
-    private final SystemModel systemModel;
-    private boolean isUIEnabled;
+public class Controller implements ControllerInterface {
+    private Model systemModel;
+    private View systemView;
 
-    public MainController() {
-        this.systemModel = new SystemModel();
-        this.isUIEnabled = false;
+    public Controller() {
+        this.systemModel = new Model();
+        this.systemView = new View(this, systemModel);
     }
 
     @Override
@@ -18,12 +19,15 @@ public class MainController implements ControllerInterface {
             // Process deactivations
             for (String feature : deactivations) {
                 systemModel.deactivateFeature(feature);
+                systemModel.getCurrentLogsList().add("[Controller] Deactivated feature: " + feature);
+
                 index--;
             }
 
             // Process activations
             for (String feature : activations) {
                 systemModel.activateFeature(feature);
+                systemModel.getCurrentLogsList().add("[Controller] Activated feature: " + feature);
                 index++;
             }
 
@@ -35,20 +39,20 @@ public class MainController implements ControllerInterface {
 
     @Override
     public boolean enableUIView() {
-        if (isUIEnabled) return true;
-        isUIEnabled = true;
-        return true;
+        systemModel.getCurrentLogsList().add("[Controller] Enabled UI view");
+        return this.systemView.showView();
     }
 
     @Override
     public boolean disableUIView() {
-        if (!isUIEnabled) return true;
-        isUIEnabled = false;
-        return true;
+        systemModel.getCurrentLogsList().add("[Controller] Disabled UI view");
+        return this.systemView.hideView();
     }
 
     @Override
     public String[] getStateAsLog() {
+
+        //Update this as well
         return systemModel.getCurrentLogs();
     }
 

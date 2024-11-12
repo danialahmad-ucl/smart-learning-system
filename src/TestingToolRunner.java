@@ -1,7 +1,7 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 import controller.ControllerInterface;
-import controller.MainController;
+import controller.Controller;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -381,7 +381,7 @@ public class TestingToolRunner {
     }
 
     public static void main(String[] args) throws Exception {
-        ControllerInterface controller = new MainController();
+        ControllerInterface controller = new Controller();
 
         // Change this if you wish to preserve old tests that you reported in Inginious, for example.
         int reference = 0;

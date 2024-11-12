@@ -50,8 +50,9 @@
 //    }
 //}
 
-import java.awt.Color;
-import controller.MainController;
+import controller.Controller;
+import model.features.*;
+import view.View;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -64,17 +65,61 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        // Create window with title "Smart Learning System" that stops the program when closed
-        JFrame frame = new JFrame("Smart Learning System");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //Create array list of dummy strings
 
-        // Creating a panel that will hold the buttons
-        JPanel panel = new JPanel();
-        frame.add(panel);
-        frame.setSize(400, 400);
-        frame.setVisible(true); // show the window
+        ArrayList<String> activatedFeatures = new ArrayList<String>()
+        {
+            {
+                add("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                add("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+                add("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+                add("ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
+                add("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
+                add("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+                add("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+                add("ggggggggggggggggggggggggggggggggg");
+                add("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+                add("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+            }
+        };
 
-        MainController controller = new MainController();
+
+        Course course1 = new Course("CS 555", Difficulty.EASY, true, activatedFeatures);
+        Course course2 = new Course("CS 666", Difficulty.EASY, true, activatedFeatures);
+        Course course3 = new Course("CS 777", Difficulty.EASY, true, activatedFeatures);
+        Course course4 = new Course("CS 888", Difficulty.EASY, true, activatedFeatures);
+
+        CourseFeature.writeToFile(course1);
+        CourseFeature.writeToFile(course2);
+        CourseFeature.writeToFile(course3);
+        CourseFeature.writeToFile(course4);
+
+//
+//        // Add 10 FlashCards
+//        PracticeFeature.writeFlashCardToFile(new FlashCard("What is Java?", "A programming language"));
+//        PracticeFeature.writeFlashCardToFile(new FlashCard("What is the capital of France?", "Paris"));
+//        PracticeFeature.writeFlashCardToFile(new FlashCard("Who developed the theory of relativity?", "Albert Einstein"));
+//        PracticeFeature.writeFlashCardToFile(new FlashCard("What is the largest planet in our solar system?", "Jupiter"));
+//        PracticeFeature.writeFlashCardToFile(new FlashCard("Who wrote 'Romeo and Juliet'?", "William Shakespeare"));
+//        PracticeFeature.writeFlashCardToFile(new FlashCard("What is 2 + 2?", "4"));
+//        PracticeFeature.writeFlashCardToFile(new FlashCard("What is the boiling point of water?", "100°C"));
+//        PracticeFeature.writeFlashCardToFile(new FlashCard("Who painted the Mona Lisa?", "Leonardo da Vinci"));
+//        PracticeFeature.writeFlashCardToFile(new FlashCard("What is the chemical symbol for gold?", "Au"));
+//        PracticeFeature.writeFlashCardToFile(new FlashCard("Who is known as the father of modern physics?", "Albert Einstein"));
+//
+//        // Add 10 MCQs
+//        PracticeFeature.writeMCQsToFile(new MCQs("What is the largest ocean on Earth?", "Pacific Ocean", new String[] {"Atlantic Ocean", "Pacific Ocean", "Indian Ocean", "Arctic Ocean"}));
+//        PracticeFeature.writeMCQsToFile(new MCQs("What is the capital of Japan?", "Tokyo", new String[] {"Kyoto", "Tokyo", "Osaka", "Sapporo"}));
+//        PracticeFeature.writeMCQsToFile(new MCQs("What is the square root of 16?", "4", new String[] {"2", "4", "8", "16"}));
+//        PracticeFeature.writeMCQsToFile(new MCQs("Which element is known as the building block of life?", "Carbon", new String[] {"Oxygen", "Hydrogen", "Carbon", "Nitrogen"}));
+//        PracticeFeature.writeMCQsToFile(new MCQs("Who invented the telephone?", "Alexander Graham Bell", new String[] {"Thomas Edison", "Alexander Graham Bell", "Nikola Tesla", "Benjamin Franklin"}));
+//        PracticeFeature.writeMCQsToFile(new MCQs("Which country is famous for the Great Wall?", "China", new String[] {"China", "India", "Japan", "Vietnam"}));
+//        PracticeFeature.writeMCQsToFile(new MCQs("What is the freezing point of water?", "0°C", new String[] {"0°C", "32°F", "-1°C", "100°C"}));
+//        PracticeFeature.writeMCQsToFile(new MCQs("Which country is known for kangaroos?", "Australia", new String[] {"Australia", "New Zealand", "South Africa", "Canada"}));
+//        PracticeFeature.writeMCQsToFile(new MCQs("What is the currency of the United Kingdom?", "Pound Sterling", new String[] {"Euro", "Pound Sterling", "Dollar", "Yen"}));
+//        PracticeFeature.writeMCQsToFile(new MCQs("Who was the first president of the United States?", "George Washington", new String[] {"Thomas Jefferson", "George Washington", "Abraham Lincoln", "John Adams"}));
+
+        Controller controller = new Controller();
         Scanner scanner = new Scanner(System.in);
 
         // Maintain a map of buttons with their feature names for easy access and removal
@@ -84,13 +129,11 @@ public class Main {
         System.out.println("Initial system state:");
         printSystemState(controller);
 
-        updateFeatureButtons(panel, featureButtons, controller.getActivatedFeatures(), controller.getDeactivatedFeatures());
 
         boolean exit = false;
         while (!exit) {
             // Refresh UI after changes
-            frame.repaint();
-            frame.revalidate();
+
             System.out.println("\nActivated Features: " + controller.getActivatedFeatures());
             System.out.println("Deactivated Features: " + controller.getDeactivatedFeatures());
 
@@ -104,8 +147,6 @@ public class Main {
             // Process activations and deactivations
             int result = controller.activate(deactivations, activations);
             System.out.println("Activation result: " + result);
-
-            updateFeatureButtons(panel, featureButtons, controller.getActivatedFeatures(), controller.getDeactivatedFeatures());
 
             // Show current system state
             System.out.println("\nCurrent system state:");
@@ -142,7 +183,7 @@ public class Main {
         return features.trim().split("\\s+");
     }
 
-    private static void printSystemState(MainController controller) {
+    private static void printSystemState(Controller controller) {
         String[] logs = controller.getStateAsLog();
         for (String log : logs) {
             System.out.println(log);

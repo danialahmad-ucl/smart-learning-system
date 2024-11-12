@@ -23,17 +23,6 @@ public class PremiumFeature implements Feature {
     }
 
     @Override
-    public String[] getLogEntries() {
-        return new String[]{
-                "buttonMedium unlockPremium mainWindow-Top",
-                "window premiumFeatures",
-                "list premiumBenefits premiumFeatures-Center",
-                "text unlimitedLives mainWindow-TopRight",
-                "text noLessonLimit mainWindow-TopLeft"
-        };
-    }
-
-    @Override
     public boolean isActive() {
         return active;
     }
