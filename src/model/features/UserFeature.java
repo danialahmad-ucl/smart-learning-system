@@ -32,10 +32,10 @@ public class UserFeature implements Feature {
         return active;
     }
 
-    public static void writeToFile(User user){
+    public static void writeToFile(User user, boolean forcedWrite){
         User temp = readFromFile();
 
-        if (temp != null) {
+        if (temp != null && !forcedWrite) {
             return;
         }
 
@@ -77,7 +77,7 @@ public class UserFeature implements Feature {
     }
 
     public void addUser(User user) {
-        writeToFile(user);
+        writeToFile(user, false);
         this.user = user;
     }
 

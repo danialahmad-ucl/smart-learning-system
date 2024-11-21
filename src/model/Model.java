@@ -89,6 +89,13 @@ public class Model {
         return deactivatedFeatures.toString().trim();
     }
 
+    public void deleteUser() {
+        String user = userFeature.getUser().getUsername();
+        UserFeature.writeToFile(null,true);
+        userFeature.addUser(null);
+        currentLogs.add("[Model] Deleted user: "+user+".");
+    }
+
     public List<Feature> getFeatureList() {
         return featureList;
     }

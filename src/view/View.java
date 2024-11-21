@@ -3,19 +3,18 @@ package view;
 import controller.Controller;
 import model.Model;
 import model.features.*;
-
 import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-
 public class View extends JFrame{
 
     int Page_Width = Toolkit.getDefaultToolkit().getScreenSize().width;
     int Page_Height = Toolkit.getDefaultToolkit().getScreenSize().height;
+    String[] difficultyLevels = {Difficulty.EASY.toString(), Difficulty.MEDIUM.toString(), Difficulty.HARD.toString() };
+    String[] columnNames = { "Course Name", "Difficulty", "Premium", "View" };
 
     Model model;
     Controller controller;
@@ -30,19 +29,18 @@ public class View extends JFrame{
         model = systemModel;
         controller = controllerLayer;
         model.getCurrentLogsList().add("[View] View object created");
-        // Set up the main frame
+
         this.setSize((int) (Page_Width/3.2), (int) (Page_Height/(1.6)));
         this.setTitle("Learning System From Future");
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Header_P = new JPanel();
-        ShowHeader();
-
         Menu_P = new JPanel();
+
+        ShowHeader();
         ShowMainMenu();
         setVisible(true);
-
     }
 
     public boolean showView() {
@@ -58,7 +56,6 @@ public class View extends JFrame{
     }
 
     public void ShowHeader() {
-
         Header_P.removeAll();
         Header_P.repaint();
         Header_P.revalidate();
@@ -69,15 +66,11 @@ public class View extends JFrame{
 
         String title = "Sign In";
         User user = model.userFeature.getUser();
-        if ( user != null)
-            title = user.getUsername();
+        if ( user != null) title = user.getUsername();
 
         if (User_B == null) {
-            User_B = new JButton(title);
-            User_B.setBackground(Color.BLUE);
-            User_B.setForeground(Color.WHITE);
+            User_B = createButton(title, Color.WHITE, Color.BLUE, -1, -1, -1, -1);
             User_B.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-            User_B.setFont(new Font("Serif", Font.BOLD, 15));
         } else {
             User_B.setText(title);
         }
@@ -92,109 +85,88 @@ public class View extends JFrame{
     }
 
     public void ShowMainMenu() {
-        Menu_P.removeAll();
-        Menu_P.repaint();
-        Menu_P.revalidate();
+        removeAllAndRepaint();
 
         Menu_P.setLayout(null);
         Menu_P.setBackground(Color.lightGray);
 
-        Menu_L = new JLabel("MAIN MENU");
-        Menu_L.setFont(new Font("Serif", Font.BOLD, 30));
-        Menu_L.setBounds(145, 60, 300, 30);
-        Menu_L.setForeground(new Color(51, 51, 51));
+        Menu_L = createLabel("MAIN MENU", new Color(51, 51, 51), new Font("Serif", Font.BOLD, 30),145, 60, 300, 30);
+        Course_B = createButton("COURSE", Color.BLACK, Color.ORANGE, 100, 160, 120, 80);
+        Help_B = createButton("HELP", Color.BLACK, Color.ORANGE, 240, 160, 120, 80);
+        PracticeMode_B = createButton("PRACTICE MODE", Color.BLACK ,Color.ORANGE, 100, 280, 260, 80);
+        Exit_B = createButton("EXIT", Color.BLACK, Color.RED, 100, 400, 80, 25);
+
         Menu_P.add(Menu_L);
-
-        Course_B = new JButton("COURSE");
-        Course_B.setBackground(Color.ORANGE);
-        Course_B.setBounds(100, 160, 120, 80);
-        Course_B.setFont(new Font("Serif", Font.BOLD, 15));
         Menu_P.add(Course_B);
-
-        Help_B = new JButton("HELP");
-        Help_B.setBackground(Color.ORANGE);
-        Help_B.setBounds(240, 160, 120, 80);;
-        Help_B.setFont(new Font("Serif", Font.BOLD, 15));
         Menu_P.add(Help_B);
-
-        PracticeMode_B = new JButton("PRACTICE MODE");
-        PracticeMode_B.setBackground(Color.ORANGE);
-        PracticeMode_B.setBounds(100, 280, 260, 80);
-        PracticeMode_B.setFont(new Font("Serif", Font.BOLD, 15));
         Menu_P.add(PracticeMode_B);
-
-        Exit_B = new JButton("EXIT");
-        Exit_B.setBounds(100, 400, 80, 25);
-        Exit_B.setBackground(Color.RED);
-        Exit_B.setForeground(Color.BLACK);
-        Exit_B.setFont(new Font("Serif", Font.BOLD, 15));
         Menu_P.add(Exit_B);
-        add(Menu_P, BorderLayout.CENTER);
 
         MyListener listener = new MyListener();
         Course_B.addActionListener(listener);
         PracticeMode_B.addActionListener(listener);
         Help_B.addActionListener(listener);
         Exit_B.addActionListener(listener);
+
+        add(Menu_P, BorderLayout.CENTER);
         model.getCurrentLogsList().add("[View] Main menu displayed");
     }
 
-    public void  showCoursePanel()
-    {
-        Menu_P.removeAll();
-        Menu_P.repaint();
-        Menu_P.revalidate();
+    public void ShowCoursePanel(){
+        removeAllAndRepaint();
 
         Menu_P.setLayout(null);
         Menu_P.setBackground(Color.lightGray);
 
-        Menu_L = new JLabel("COURSE MENU");
-        Menu_L.setFont(new Font("Serif", Font.BOLD, 30));
-        Menu_L.setBounds(145, 60, 300, 30);
-        Menu_L.setForeground(new Color(51, 51, 51));
-        Menu_P.add(Menu_L);
-
-        String[] difficultyLevels = {Difficulty.EASY.toString(), Difficulty.MEDIUM.toString(), Difficulty.HARD.toString() };
         difficultyDropdown = new JComboBox<>(difficultyLevels);
         difficultyDropdown.setBounds(100, 160, 260, 50);
+
+        Menu_L = createLabel("COURSE MENU", new Color(51, 51, 51), new Font("Serif", Font.BOLD, 30),145, 60, 300, 30);
+        DisplayCourse_B = createButton("COURSES", Color.BLACK, Color.ORANGE, 100, 280, 120, 80);
+        PremiumCourse_B = createButton("PREMIUM", Color.BLACK, Color.ORANGE, 240, 280, 120, 80);
+        Course_Back_B = createButton("BACK", Color.WHITE, Color.BLUE, 100, 400, 80, 25);
+
+        Menu_P.add(Menu_L);
         Menu_P.add(difficultyDropdown);
-
-        DisplayCourse_B = new JButton("COURSES");
-        DisplayCourse_B.setBackground(Color.ORANGE);
-        DisplayCourse_B.setBounds(100, 280, 120, 80);
-        DisplayCourse_B.setFont(new Font("Serif", Font.BOLD, 15));
         Menu_P.add(DisplayCourse_B);
-
-        PremiumCourse_B = new JButton("PREMIUM");
-        PremiumCourse_B.setBackground(Color.ORANGE);
-        PremiumCourse_B.setBounds(240, 280, 120, 80);
-        PremiumCourse_B.setFont(new Font("Serif", Font.BOLD, 15));
-        if (model.userFeature.getUser() != null) Menu_P.add(PremiumCourse_B);
-
-        Course_Back_B = new JButton("BACK");
-        Course_Back_B.setBounds(100, 400, 80, 25);
-        Course_Back_B.setBackground(Color.BLUE);
-        Course_Back_B.setForeground(Color.WHITE);
-        Course_Back_B.setFont(new Font("Serif", Font.BOLD, 15));
+        if (model.userFeature.getUser() != null)
+            Menu_P.add(PremiumCourse_B);
         Menu_P.add(Course_Back_B);
-
-        add(Menu_P, BorderLayout.CENTER);
 
         MyListener listener = new MyListener();
         DisplayCourse_B.addActionListener(listener);
         PremiumCourse_B.addActionListener(listener);
         Course_Back_B.addActionListener(listener);
+
+        add(Menu_P, BorderLayout.CENTER);
         model.getCurrentLogsList().add("[View] Course menu displayed");
     }
 
-    public void ShowCoursesPanel(ArrayList<Course> coursesList, String difficulty, boolean isPremium) {
-        Menu_P.removeAll();
-        Menu_P.repaint();
-        Menu_P.revalidate();
+    public void ShowCourseTopicsPanel(Course course, String topic, int index) {
+        removeAllAndRepaint();
+
+        JList<String> topicList = new JList<>(course.getTopics().toArray(new String[0]));
+        ArrayList<Course> coursesList = CourseFeature.readFromFile();
 
         Menu_P.setLayout(new BorderLayout());
 
-        String[] columnNames = { "Course Name", "Difficulty", "Premium", "View" };
+        JPanel buttonPanel = new JPanel();
+        JLabel courseTitle = createLabel("Topics for: " + course.getName(), Color.BLACK, new Font("Serif", Font.BOLD, 24), -1, -1,-1, -1);
+        JScrollPane scrollPane = new JScrollPane(topicList);
+        JButton backButton = createButton("Back", Color.WHITE, Color.BLUE, 100, 400, 80, 25);
+
+        backButton.addActionListener(e -> ShowCoursesPanel(coursesList, course.getDifficulty().toString(), course.isPremium()));
+        buttonPanel.add(backButton);
+
+        Menu_P.add(courseTitle, BorderLayout.NORTH);
+        Menu_P.add(scrollPane, BorderLayout.CENTER);
+        Menu_P.add(buttonPanel, BorderLayout.SOUTH);
+        model.getCurrentLogsList().add("[View] Course topics displayed");
+    }
+
+    public void ShowCoursesPanel(ArrayList<Course> coursesList, String difficulty, boolean isPremium) {
+        removeAllAndRepaint();
+        Menu_P.setLayout(new BorderLayout());
 
         ArrayList<Course> newCourseList = new ArrayList<>();
         for (Course course : coursesList) {
@@ -222,90 +194,37 @@ public class View extends JFrame{
         };
 
         table.getColumn("View").setCellRenderer(new ButtonRenderer());
-        table.getColumn("View").setCellEditor(new ButtonEditor(new JCheckBox(), table, coursesList));
+        table.getColumn("View").setCellEditor(new ButtonEditor(this, new JCheckBox(), table, coursesList));
 
         JScrollPane scrollPane = new JScrollPane(table);
+        JLabel noCoursesLabel = createLabel("No courses found", Color.BLACK, new Font("Serif", Font.BOLD, 20), -1, -1, -1, -1);
+        Course_B = createButton("BACK", Color.WHITE, Color.BLUE, 100, 400, 80, 25);
 
-        Course_B = new JButton("BACK");
-        Course_B.setBounds(100, 400, 80, 25);
-        Course_B.setBackground(Color.BLUE);
-        Course_B.setForeground(Color.WHITE);
-        Course_B.setFont(new Font("Serif", Font.BOLD, 15));
         Menu_P.add(Course_B);
+        if (newCourseList.size() == 0)
+            Menu_P.add(noCoursesLabel, BorderLayout.NORTH);
         Menu_P.add(scrollPane, BorderLayout.CENTER);
-
-        Menu_P.repaint();
-        Menu_P.revalidate();
 
         MyListener listener = new MyListener();
         Course_B.addActionListener(listener);
+
         model.getCurrentLogsList().add("[View] Courses displayed");
     }
 
-    public void ShowCourseTopicsPanel(Course course, String topic, int index) {
-        Menu_P.removeAll();
-        Menu_P.repaint();
-        Menu_P.revalidate();
-
-        Menu_P.setLayout(new BorderLayout());
-
-        model.getCurrentLogsList().add("[View] Course topics displayed");
-        JLabel courseTitle = new JLabel("Topics for: " + course.getName());
-        courseTitle.setFont(new Font("Serif", Font.BOLD, 24));
-        Menu_P.add(courseTitle, BorderLayout.NORTH);
-
-        JList<String> topicList = new JList<>(course.getTopics().toArray(new String[0]));
-        JScrollPane scrollPane = new JScrollPane(topicList);
-        Menu_P.add(scrollPane, BorderLayout.CENTER);
-
-        JPanel buttonPanel = new JPanel();
-        JButton backButton = new JButton("Back");
-        backButton.setBounds(100, 400, 80, 25);
-        backButton.setBackground(Color.BLUE);
-        backButton.setForeground(Color.WHITE);
-        backButton.setFont(new Font("Serif", Font.BOLD, 15));
-
-        ArrayList<Course> coursesList = CourseFeature.readFromFile();
-        backButton.addActionListener(e -> ShowCoursesPanel(coursesList, course.getDifficulty().toString(), course.isPremium()));
-        buttonPanel.add(backButton);
-
-        Menu_P.add(buttonPanel, BorderLayout.SOUTH);
-        Menu_P.repaint();
-        Menu_P.revalidate();
-
-    }
-
-    public void showPracticeModePanel() {
-        Menu_P.removeAll();
-        Menu_P.repaint();
-        Menu_P.revalidate();
+    public void ShowPracticeModePanel() {
+        removeAllAndRepaint();
 
         Menu_P.setLayout(null);
         Menu_P.setBackground(Color.lightGray);
 
-        Menu_L = new JLabel("PRACTICE MODE");
-        Menu_L.setFont(new Font("Serif", Font.BOLD, 30));
-        Menu_L.setBounds(145, 60, 300, 30);
-        Menu_L.setForeground(new Color(51, 51, 51));
+        Menu_L = createLabel("PRACTICE MODE", new Color(51, 51, 51), new Font("Serif", Font.BOLD, 30),145, 60, 300, 30);
+        Flashcard_B = createButton("Flash Cards", Color.BLACK, Color.ORANGE,100, 160, 120, 80);
+        MCQs_B = createButton("MCQs", Color.BLACK, Color.ORANGE,240, 160, 120, 80);
+        Course_Back_B = createButton("BACK", Color.WHITE, Color.BLUE,100, 400, 80, 25);
+
         Menu_P.add(Menu_L);
-
-        Flashcard_B = new JButton("Flash Cards");
-        Flashcard_B.setBackground(Color.ORANGE);
-        Flashcard_B.setBounds(100, 160, 120, 80);
-        Flashcard_B.setFont(new Font("Serif", Font.BOLD, 15));
         Menu_P.add(Flashcard_B);
-
-        MCQs_B = new JButton("MCQs");
-        MCQs_B.setBackground(Color.ORANGE);
-        MCQs_B.setBounds(240, 160, 120, 80);;
-        MCQs_B.setFont(new Font("Serif", Font.BOLD, 15));
         Menu_P.add(MCQs_B);
-
-        Course_Back_B = new JButton("BACK");
-        Course_Back_B.setBounds(100, 400, 80, 25);
-        Course_Back_B.setBackground(Color.BLUE);
-        Course_Back_B.setForeground(Color.WHITE);
-        Course_Back_B.setFont(new Font("Serif", Font.BOLD, 15));
         Menu_P.add(Course_Back_B);
 
         MyListener listener = new MyListener();
@@ -313,48 +232,28 @@ public class View extends JFrame{
         MCQs_B.addActionListener(listener);
         Course_Back_B.addActionListener(listener);
 
-        Menu_P.revalidate();
-        Menu_P.repaint();
         model.getCurrentLogsList().add("[View] Practice mode displayed");
     }
 
     private void displayFlashCards() {
-        Menu_P.removeAll();
-        Menu_P.repaint();
-        Menu_P.revalidate();
+        removeAllAndRepaint();
 
-        Menu_P.setLayout(null);
         ArrayList<FlashCard> flashCards = PracticeFeature.readFlashCardFromFile();
         final int[] currentFlashCardIndex = {0};
+
+        Menu_P.setLayout(null);
 
         Runnable updateFlashCardPanel = new Runnable() {
             @Override
             public void run() {
+                removeAllAndRepaint();
                 FlashCard currentCard = flashCards.get(currentFlashCardIndex[0]);
 
-                JLabel questionLabel = new JLabel("Question: " + currentCard.getQuestion());
-                questionLabel.setFont(new Font("Serif", Font.PLAIN, 16));
-                questionLabel.setBounds(95, 30, 400, 20);
-                JLabel answerLabel = new JLabel("Answer: " + currentCard.getAnswer());
-                answerLabel.setBounds(95, 80, 400, 20);
-                answerLabel.setFont(new Font("Serif", Font.PLAIN, 14));
-
-                Menu_P.removeAll();
-
-                Menu_P.add(questionLabel);
-                Menu_P.add(answerLabel);
-
-                JButton previousButton = new JButton("Previous");
-                previousButton.setBackground(Color.BLACK);
-                previousButton.setForeground(Color.WHITE);
-                previousButton.setBounds(100, 280, 120, 80);
-                previousButton.setFont(new Font("Serif", Font.BOLD, 15));
-
-                JButton nextButton = new JButton("Next");
-                nextButton.setBackground(Color.BLACK);
-                nextButton.setForeground(Color.WHITE);
-                nextButton.setBounds(240, 280, 120, 80);;
-                nextButton.setFont(new Font("Serif", Font.BOLD, 15));
+                JLabel questionLabel = createLabel("Question: " + currentCard.getQuestion(), Color.BLACK, new Font("Serif", Font.PLAIN, 16), 95, 30, 400, 20);
+                JLabel answerLabel = createLabel("Answer: " + currentCard.getAnswer(), Color.BLACK, new Font("Serif", Font.PLAIN, 14), 95, 80, 400, 20);
+                JButton previousButton = createButton("Previous", Color.WHITE, Color.BLACK, 100, 280, 120, 80);
+                JButton nextButton = createButton("Next", Color.WHITE, Color.BLACK, 240, 280, 120, 80);
+                PracticeMode_Back_B = createButton("Back", Color.WHITE, Color.BLUE, 100, 400, 80, 25);
 
                 previousButton.addActionListener(e -> {
                     if (currentFlashCardIndex[0] > 0) {
@@ -363,7 +262,6 @@ public class View extends JFrame{
                     }
                 });
 
-                // Next button action
                 nextButton.addActionListener(e -> {
                     if (currentFlashCardIndex[0] < flashCards.size() - 1) {
                         currentFlashCardIndex[0]++;
@@ -371,131 +269,133 @@ public class View extends JFrame{
                     }
                 });
 
+                PracticeMode_Back_B.addActionListener(e -> {
+                    ShowPracticeModePanel();
+                });
+
+                Menu_P.add(questionLabel);
+                Menu_P.add(answerLabel);
                 Menu_P.add(previousButton);
                 Menu_P.add(nextButton);
-
-                PracticeMode_Back_B = new JButton("Back");
-                PracticeMode_Back_B.setBackground(Color.BLUE);
-                PracticeMode_Back_B.setForeground(Color.WHITE);
-                PracticeMode_Back_B.setFont(new Font("Serif", Font.BOLD, 15));
-                PracticeMode_Back_B.setBounds(100, 400, 80, 25);
-                PracticeMode_Back_B.addActionListener(e -> showPracticeModePanel());
-
                 Menu_P.add(PracticeMode_Back_B);
-
-                Menu_P.revalidate();
-                Menu_P.repaint();
             }
         };
 
         updateFlashCardPanel.run();
-
-        Menu_P.revalidate();
-        Menu_P.repaint();
         model.getCurrentLogsList().add("[View] Flash cards displayed");
     }
 
-
     private void displayMCQs() {
-        Menu_P.removeAll();
-        Menu_P.repaint();
-        Menu_P.revalidate();
+        removeAllAndRepaint();
 
         Menu_P.setLayout(null);
 
-        PracticeMode_Back_B = new JButton("Back");
-        PracticeMode_Back_B.setBounds(100, 400, 80, 25);
-        PracticeMode_Back_B.setBackground(Color.BLUE);
-        PracticeMode_Back_B.setForeground(Color.WHITE);
-        PracticeMode_Back_B.setFont(new Font("Serif", Font.BOLD, 15));
+        PracticeMode_Back_B = createButton("Back", Color.WHITE, Color.BLUE, 100, 400, 80, 25);
         PracticeMode_Back_B.addActionListener(new MyListener());
 
         ArrayList<MCQs> mcqs = PracticeFeature.readMCQsFromFile();
-
         final int[] currentMCQIndex = {0};
 
         Runnable updateMCQPanel = new Runnable() {
             @Override
             public void run() {
+                removeAllAndRepaint();
+
                 MCQs currentMCQ = mcqs.get(currentMCQIndex[0]);
-                JLabel questionLabel = new JLabel("Question: " + currentMCQ.getQuestion());
-                questionLabel.setFont(new Font("Serif", Font.PLAIN, 16));
-                questionLabel.setBounds(95, 30, 400, 20);
 
                 JPanel optionsPanel = new JPanel();
                 optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
                 optionsPanel.setBounds(95, 100, 400, 180);
                 optionsPanel.setBackground(Color.lightGray);
 
+                JLabel questionLabel = createLabel("Question: " + currentMCQ.getQuestion(), Color.BLACK, new Font("Serif", Font.PLAIN, 16), 95, 30, 400, 20);
+                JButton reset_B = createButton("Retry", Color.WHITE, Color.BLUE, 380, 280, 80, 80);
+                JButton previousButton = createButton("Previous", Color.WHITE, Color.BLACK, 100, 280, 120, 80);
+                JButton nextButton = createButton("Next", Color.WHITE, Color.BLACK, 240, 280, 120, 80);
+
                 for (String option : currentMCQ.getOptions()) {
-                    JButton optionButton = new JButton(option);
-                    optionButton.setBackground(Color.YELLOW);
-                    optionButton.setForeground(Color.BLACK);
-                    optionButton.setFont(new Font("Serif", Font.BOLD, 15));
+                    JButton optionButton = createButton(option, Color.BLACK, Color.YELLOW, -1, -1, -1, -1);
                     optionsPanel.add(optionButton);
                     optionButton.addActionListener(e -> {
                         if (currentMCQ.getAnswer() == option) {
                             optionButton.setBackground(Color.GREEN);
                         }
+                        else {
+                            optionButton.setBackground(Color.RED);
+                            previousButton.setEnabled(false);
+                            nextButton.setEnabled(false);
+                            optionsPanel.add(reset_B);
+                            Menu_P.add(reset_B);
+                        }
                     });
                 }
 
-                Menu_P.removeAll();
+                reset_B.addActionListener(e -> {
+                    run();
+                });
 
-                Menu_P.add(questionLabel);
-                Menu_P.add(optionsPanel);
-
-                JButton previousButton = new JButton("Previous");
-                previousButton.setBackground(Color.BLACK);
-                previousButton.setForeground(Color.WHITE);
-                previousButton.setBounds(100, 280, 120, 80);
-                previousButton.setFont(new Font("Serif", Font.BOLD, 15));
-
-                JButton nextButton = new JButton("Next");
-                nextButton.setBackground(Color.BLACK);
-                nextButton.setForeground(Color.WHITE);
-                nextButton.setBounds(240, 280, 120, 80);;
-                nextButton.setFont(new Font("Serif", Font.BOLD, 15));
-
-                // Previous button action
                 previousButton.addActionListener(e -> {
                     if (currentMCQIndex[0] > 0) {
                         currentMCQIndex[0]--;
-                        run(); // Update with new MCQ
+                        run();
                     }
                 });
 
                 nextButton.addActionListener(e -> {
                     if (currentMCQIndex[0] < mcqs.size() - 1) {
                         currentMCQIndex[0]++;
-                        run(); // Update with new MCQ
+                        run();
                     }
                 });
 
+                Menu_P.add(questionLabel);
+                Menu_P.add(optionsPanel);
                 Menu_P.add(previousButton);
                 Menu_P.add(nextButton);
                 Menu_P.add(PracticeMode_Back_B);
-                Menu_P.revalidate();
-                Menu_P.repaint();
             }
         };
         updateMCQPanel.run();
-        Menu_P.revalidate();
-        Menu_P.repaint();
-
         model.getCurrentLogsList().add("[View] MCQs displayed");
     }
 
+    // Method that creates button taking button name foreground and background color bounds as parameters and returns the button
+    private JButton createButton(String buttonName, Color foregroundColor, Color backgroundColor, int x, int y, int width, int height) {
+        JButton button = new JButton(buttonName);
+        button.setBackground(backgroundColor);
+        button.setForeground(foregroundColor);
+        button.setFont(new Font("Serif", Font.BOLD, 15));
+        if (x != -1 && y != -1 && width != -1 && height != -1)
+            button.setBounds(x, y, width, height);
+
+        return button;
+    }
+
+    //Method to create label with text, font, bounds, color and return the label and if bounds are not provided then don't set bounds use default parameters for bounds
+    private JLabel createLabel(String text, Color color, Font font,int x, int y, int width, int height) {
+        JLabel label = new JLabel(text);
+        label.setFont(font);
+        label.setForeground(color);
+        if (x != -1 && y != -1 && width != -1 && height != -1)
+            label.setBounds(x, y, width, height);
+
+        return label;
+    }
+
+    //Method to removeall and repaint the panel
+    private void removeAllAndRepaint() {
+        Menu_P.removeAll();
+        Menu_P.repaint();
+        Menu_P.revalidate();
+    }
 
     public class MyListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == User_B){
-                String userName = JOptionPane.showInputDialog(null, "Enter userName to enter : ", "Sign In/Sign Up", JOptionPane.QUESTION_MESSAGE);
-
-                User user = model.userFeature.getUser(userName);
-                if (user == null) {
+            if (e.getSource().equals(User_B)){
+                if (model.userFeature.getUser() == null) {
+                    String userName = JOptionPane.showInputDialog(null, "Enter userName to enter : ", "Sign In/Sign Up", JOptionPane.QUESTION_MESSAGE);
                     String password = JOptionPane.showInputDialog(null, "Enter password to enter : ", "Sign Up", JOptionPane.QUESTION_MESSAGE);
                     User newUser = new User(userName, password);
                     model.userFeature.addUser(newUser);
@@ -503,13 +403,19 @@ public class View extends JFrame{
                     model.getCurrentLogsList().add("[View] User SignUp Successful");
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "User SignIn Successful", "Successful", JOptionPane.INFORMATION_MESSAGE);
-                    model.getCurrentLogsList().add("[View] User SignIn Successful");
+                    int view = JOptionPane.showConfirmDialog(null, "Do you want to SignOut and Delete Account?", "Sign Out", JOptionPane.YES_NO_OPTION);
+
+                    if (view == 0) {
+                        JOptionPane.showMessageDialog(null, "User SignOut Successful \nAccount Deleted", "Successful", JOptionPane.INFORMATION_MESSAGE);
+                        model.getCurrentLogsList().add("[View] User SignOut Successful");
+                        model.deleteUser();
+                    }
                 }
+
                 ShowHeader();
             }
             else if (e.getSource() == Course_B) {
-                showCoursePanel();
+                ShowCoursePanel();
             } else if (e.getSource() == DisplayCourse_B) {
                 ArrayList<Course> coursesList = CourseFeature.readFromFile();
                 ShowCoursesPanel(coursesList, (String) difficultyDropdown.getSelectedItem(), false);
@@ -519,13 +425,13 @@ public class View extends JFrame{
             } else if (e.getSource() == Course_Back_B) {
                 ShowMainMenu();
             } else if (e.getSource() == PracticeMode_B) {
-                showPracticeModePanel();
+                ShowPracticeModePanel();
             } else if (e.getSource() == Flashcard_B) {
                 displayFlashCards();
             } else if (e.getSource() == MCQs_B) {
                 displayMCQs();
             } else if (e.getSource() == PracticeMode_Back_B) {
-                showPracticeModePanel();
+                ShowPracticeModePanel();
             } else if (e.getSource() == Help_B) {
                 model.getCurrentLogsList().add("[View] Help");
             } else if (e.getSource() == Exit_B) {
@@ -534,68 +440,4 @@ public class View extends JFrame{
             }
         }
     }
-
-    class ButtonRenderer extends JButton implements TableCellRenderer {
-        public ButtonRenderer() {
-            setOpaque(true);
-        }
-        public Component getTableCellRendererComponent(JTable table, Object value,
-                                                       boolean isSelected, boolean hasFocus, int row, int column) {
-            setText((value == null) ? "" : value.toString());
-            setBackground(Color.ORANGE);
-            setForeground(Color.BLACK);
-            setFont(new Font("Serif", Font.BOLD, 15));
-            return this;
-        }
-    }
-
-    class ButtonEditor extends DefaultCellEditor {
-        protected JButton button;
-        private String label;
-        private boolean isPushed;
-        private JTable table; // Reference to the table
-        private ArrayList<Course> coursesList; // Reference to the courses list
-
-        public ButtonEditor(JCheckBox checkBox, JTable table, ArrayList<Course> coursesList) {
-            super(checkBox);
-            this.table = table;
-            this.coursesList = coursesList; // Store reference to courses list
-            button = new JButton();
-            button.setOpaque(true);
-            button.addActionListener(e -> fireEditingStopped());
-            model.getCurrentLogsList().add("[View] ButtonEditor created");
-        }
-
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                                                     boolean isSelected, int row, int column) {
-            label = (value == null) ? "" : value.toString();
-            button.setText(label);
-            isPushed = true;
-            return button;
-        }
-
-        public Object getCellEditorValue() {
-            if (isPushed) {
-                // Handle "View" button click logic here
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow >= 0) {
-                    Course selectedCourse = coursesList.get(selectedRow);
-                    ShowCourseTopicsPanel(selectedCourse, selectedCourse.getTopics().get(0), 0);
-                }
-            }
-            model.getCurrentLogsList().add("[View] ButtonEditor getCellEditorValue");
-            isPushed = false;
-            return label;
-        }
-
-        public boolean stopCellEditing() {
-            isPushed = false;
-            return super.stopCellEditing();
-        }
-
-        protected void fireEditingStopped() {
-            super.fireEditingStopped();
-        }
-    }
 }
-

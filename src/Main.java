@@ -66,36 +66,41 @@ public class Main {
     public static void main(String[] args) {
 
         //Create array list of dummy strings
-
-        ArrayList<String> activatedFeatures = new ArrayList<String>()
-        {
-            {
-                add("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                add("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-                add("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-                add("ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
-                add("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
-                add("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-                add("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-                add("ggggggggggggggggggggggggggggggggg");
-                add("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-                add("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-            }
-        };
+        //create 5 dummy arraylist of strings with different lengths as topics of courses
+        ArrayList<String> topics = new ArrayList<>();
+        topics.add("Java");
+        topics.add("Python");
+        topics.add("C++");
+        topics.add("JavaScript");
+        topics.add("HTML");
 
 
-        Course course1 = new Course("CS 555", Difficulty.EASY, true, activatedFeatures);
-        Course course2 = new Course("CS 666", Difficulty.EASY, true, activatedFeatures);
-        Course course3 = new Course("CS 777", Difficulty.EASY, true, activatedFeatures);
-        Course course4 = new Course("CS 888", Difficulty.EASY, true, activatedFeatures);
+        ArrayList<String> topics1 = new ArrayList<>();
+        topics1.add("Java Script");
+        topics1.add("Python Script");
+        topics1.add("C++ Script");
+        topics1.add("JavaScript Script");
+        topics1.add("HTML Script");
+        topics1.add("CSS Script");
+
+
+        Course course1 = new Course("CS-easy-premium", Difficulty.EASY, true, topics1);
+        Course course2 = new Course("CS-easy-premium2", Difficulty.EASY, true, topics1);
+        
+        Course course3 = new Course("CS-hard-premium", Difficulty.HARD, true, topics1);
+        Course course4 = new Course("CS-medium-premium", Difficulty.MEDIUM , true, topics1);
+        Course course5 = new Course("CS-easy", Difficulty.EASY, false, topics);
+        Course course6 = new Course("CS-easy", Difficulty.EASY, false, topics);
 
         CourseFeature.writeToFile(course1);
         CourseFeature.writeToFile(course2);
         CourseFeature.writeToFile(course3);
         CourseFeature.writeToFile(course4);
+        CourseFeature.writeToFile(course5);
+        CourseFeature.writeToFile(course6);
 
-//
-//        // Add 10 FlashCards
+
+//        This code adds 11 Flashcards to the file (Use this code to add more flashcards)
 //        PracticeFeature.writeFlashCardToFile(new FlashCard("What is Java?", "A programming language"));
 //        PracticeFeature.writeFlashCardToFile(new FlashCard("What is the capital of France?", "Paris"));
 //        PracticeFeature.writeFlashCardToFile(new FlashCard("Who developed the theory of relativity?", "Albert Einstein"));
@@ -107,7 +112,7 @@ public class Main {
 //        PracticeFeature.writeFlashCardToFile(new FlashCard("What is the chemical symbol for gold?", "Au"));
 //        PracticeFeature.writeFlashCardToFile(new FlashCard("Who is known as the father of modern physics?", "Albert Einstein"));
 //
-//        // Add 10 MCQs
+//        // This code adds 11 MCQs to the file (Use this code to add more MCQs)
 //        PracticeFeature.writeMCQsToFile(new MCQs("What is the largest ocean on Earth?", "Pacific Ocean", new String[] {"Atlantic Ocean", "Pacific Ocean", "Indian Ocean", "Arctic Ocean"}));
 //        PracticeFeature.writeMCQsToFile(new MCQs("What is the capital of Japan?", "Tokyo", new String[] {"Kyoto", "Tokyo", "Osaka", "Sapporo"}));
 //        PracticeFeature.writeMCQsToFile(new MCQs("What is the square root of 16?", "4", new String[] {"2", "4", "8", "16"}));
